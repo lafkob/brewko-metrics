@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {%- block head %}
+    <title>brewkometrics</title>
+
+    {%- block metas %}
+    <!-- metas here -->
+    {%- endblock metas %}
+
+    {%- block styles %}
+    <!-- styles here -->
+    {%- endblock styles %}
+    {%- endblock head %}
+</head>
+<body>
+    {% block body -%}
+    {% block navbar %}
+    <!-- navbar here -->
+    {%- endblock navbar %}
+    {% block content -%}
+    <!-- page content here -->
+    {%- endblock content %}
+
+    {% block scripts %}
+    <!-- scripts here -->
+    {%- endblock scripts %}
+    {%- endblock body %}
+</body>
+</html>

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h1>Pitcher Game Score</h1>
+        {% for player in players %}
+            {{ player.game_score }}: {{ player.nice_output() }}<br/>
+        {% endfor %}
+    </div>
+{% endblock %}
