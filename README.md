@@ -38,3 +38,11 @@ AGS = 50 + GS – E
 ## Starting Point
 
 OK, the problem is where to start. The only really accurate place to start the rankings is would be in 1876, but of course we don’t have organized data for every start prior to 1960. Bill James started his rankings with the 1990 season.
+
+# Installation
+
+## Troubleshooting
+
+### pip lxml installation error on windows
+
+This occurs because windows doesn't come with a standard compiler. You can get the appropriate .whl file for lxml from http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml and then install it using pip install <.whl file>.
