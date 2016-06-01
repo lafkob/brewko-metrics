@@ -3,8 +3,29 @@
 {% block content %}
     <div>
         <h1>Pitcher Game Score</h1>
-        {% for player in players %}
-            {{ player.game_score }}: {{ player.nice_output() }}<br/>
-        {% endfor %}
+        <table>
+            <tr>
+                <th>Game Score</th>
+                <th>Player</th>
+                <th>Innings Pitched</th>
+                <th>Hits</th>
+                <th>Runs</th>
+                <th>Earned Runs</th>
+                <th>Walks</th>
+                <th>Strikeouts</th>
+            </tr>
+            {% for player in players %}
+            <tr>
+                <td>{{ player.game_score }}</td>
+                <td>{{ player.name_display_first_last }}</td>
+                <td>{{ player.out // 3 }}.{{ player.out % 3 }}</td>
+                <td>{{ player.er }}</td>
+                <td>{{ player.so }}</td>
+                <td>{{ player.h }}</td>
+                <td>{{ player.bb }}</td>
+                <td>{{ player.r }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}
