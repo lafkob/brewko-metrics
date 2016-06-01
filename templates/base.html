@@ -9,7 +9,7 @@
     {%- endblock metas %}
 
     {%- block styles %}
-    <!-- styles here -->
+    <link href="{{ url_for('static', filename='css/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
     {%- endblock styles %}
     {%- endblock head %}
 </head>
@@ -19,11 +19,19 @@
     <!-- navbar here -->
     {%- endblock navbar %}
     {% block content -%}
+        <!-- TODO: flash messages-->
+        <!--{% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}-->
     <!-- page content here -->
     {%- endblock content %}
 
     {% block scripts %}
-    <!-- scripts here -->
+    <script src="{{ url_for('static', filename='js/jquery/jquery-2.2.4.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap/bootstrap.min.js') }}"></script>
     {%- endblock scripts %}
     {%- endblock body %}
 </body>
