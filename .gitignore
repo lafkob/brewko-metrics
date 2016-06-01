@@ -66,3 +66,9 @@ venv/
 
 # pycharm
 .idea/
+
+etl/v0.6.5.tar.gz
+etl/chadwick-0.6.5/
+etl/postseason/
+etl/regular_season/
+etl/starts.csv
