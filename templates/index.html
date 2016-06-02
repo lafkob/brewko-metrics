@@ -29,11 +29,11 @@
                                     <td>{{ player.game_score }}</td>
                                     <td>{{ player.name_display_first_last }}</td>
                                     <td title="Innings Pitched">{{ player.out // 3 }}.{{ player.out % 3 }}</td>
-                                    <td title="Hits">{{ player.er }}</td>
-                                    <td title="Runs">{{ player.so }}</td>
-                                    <td title="Earned Runs">{{ player.h }}</td>
+                                    <td title="Hits">{{ player.h }}</td>
+                                    <td title="Runs">{{ player.r }}</td>
+                                    <td title="Earned Runs">{{ player.er }}</td>
                                     <td title="Walks">{{ player.bb }}</td>
-                                    <td title="Strikeouts">{{ player.r }}</td>
+                                    <td title="Strikeouts">{{ player.so }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
