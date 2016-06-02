@@ -9,25 +9,25 @@ import datetime
 
 from mlbgame.stats import PitcherStats
 
-Outing = namedtuple('Outing', 'date pitcher')
+Outing = namedtuple('Outing', 'date pitcher site')
 
 
 def parse_for_starting_pitcher_outings(xml_file):
     with open(xml_file) as f:
         it = itertools.chain('<games>', f, '</games>')
         doc = etree.fromstringlist(it)
-        #doc = etree.parse(xml_file)
         pitcher_outings = []
         for boxscore in doc.findall('boxscore'):
             year, month, day = map(lambda x: int(x),
                                    boxscore.get('date').split('/'))
             date = datetime.date(year, month, day)
+            site = boxscore.get('site')
             for pitching in boxscore.findall('pitching'):
                 for pitcher in pitching.findall('pitcher'):
                     p = PitcherStats(pitcher.attrib)
                     p.out = p.outs  # slight difference
                     if p.gs == 1:
-                        pitcher_outings.append(Outing(date, p))
+                        pitcher_outings.append(Outing(date, p, site))
                         break
     return pitcher_outings
 
@@ -54,7 +54,8 @@ def write_all(path, writer):
     for outings in parse_all(path):
         for outing in outings:
             p = outing.pitcher
-            writer.writerow([outing.date, p.id, calculate_game_score(p),
+            writer.writerow([outing.date, p.id, outing.site,
+                             calculate_game_score(p),
                              p.out, p.h, p.r, p.er, p.bb, p.so])
 
 
