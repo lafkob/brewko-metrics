@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, request
 import stats
 import datetime
 
@@ -21,7 +21,7 @@ def app_root():
     :return:
     """
     now = datetime.datetime.now()
-    return render_template("index.html", players=_get_game_scores(now))
+    return get_stats(now.year, now.month, now.day)
 
 
 @app.route("/<int:year>/<int:month>/<int:day>", methods=['GET'])
@@ -31,15 +31,27 @@ def get_stats(year=0, month=0, day=0):
 
     :return:
     """
-
-    # validate the input date
     try:
         date = datetime.datetime(year=year, month=month, day=day)
     except ValueError:
         abort(404)
 
-    # TODO: pass in sort column, sort direction, page, page size
-    return render_template("index.html", players=_get_game_scores(date))
+    sort_col = request.args.get('sort_col', default='game_score')
+    if not _sort_col_lookup[sort_col]:
+        abort(404)
+
+    reverse = request.args.get('reverse', default=True)
+    page = request.args.get('page', default=0, type=int)
+    if page < 0:
+        abort(404)
+
+    page_size = request.args.get('page_size', default=50, type=int)
+    if page_size < 0 or page_size > 100:
+        abort(404)
+    # end validation
+
+    players = _get_game_scores(date, sort_col, reverse, page, page_size)
+    return render_template("index.html", players=players)
 
 
 def _get_game_scores(date, sort_col='game_score', reverse=True, page=0, page_size=50):
