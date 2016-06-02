@@ -30,4 +30,7 @@ export LD_LIBRARY_PATH=/usr/local/lib
 ./build_box_scores.py
 
 # 4. Parse the box scores and extract all pitcher starts
-../parse.py
+./parse.py
+
+# 5. Load the .csv file into sqlite
+sqlite3 test.db < create.sql
