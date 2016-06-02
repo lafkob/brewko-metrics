@@ -72,4 +72,5 @@ etl/chadwick-0.6.5/
 etl/postseason/
 etl/regular_season/
 etl/starts.csv
+etl/games.csv
 etl/starts.db

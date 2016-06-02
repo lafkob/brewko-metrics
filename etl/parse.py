@@ -10,6 +10,7 @@ import datetime
 from mlbgame.stats import PitcherStats
 
 Outing = namedtuple('Outing', 'date pitcher site')
+Game = namedtuple('Game', 'date site total_runs')
 
 
 def parse_for_starting_pitcher_outings(xml_file):
@@ -17,11 +18,18 @@ def parse_for_starting_pitcher_outings(xml_file):
         it = itertools.chain('<games>', f, '</games>')
         doc = etree.fromstringlist(it)
         pitcher_outings = []
+        games = []
         for boxscore in doc.findall('boxscore'):
             year, month, day = map(lambda x: int(x),
                                    boxscore.get('date').split('/'))
             date = datetime.date(year, month, day)
             site = boxscore.get('site')
+
+            linescore = boxscore.find('linescore')
+            total_runs = (int(linescore.get('away_runs')) +
+                          int(linescore.get('home_runs')))
+            games.append(Game(date, site, total_runs))
+
             for pitching in boxscore.findall('pitching'):
                 for pitcher in pitching.findall('pitcher'):
                     p = PitcherStats(pitcher.attrib)
@@ -29,7 +37,8 @@ def parse_for_starting_pitcher_outings(xml_file):
                     if p.gs == 1:
                         pitcher_outings.append(Outing(date, p, site))
                         break
-    return pitcher_outings
+
+    return pitcher_outings, games
 
 
 def innings_completed_past_the_fourth(outs):
@@ -50,20 +59,26 @@ def parse_all(path):
             yield parse_for_starting_pitcher_outings('%s/%s' % (path, file))
 
 
-def write_all(path, writer):
-    for outings in parse_all(path):
+def write_all(path, starts_writer, games_writer):
+    global i
+    global j
+    for outings, games in parse_all(path):
         for outing in outings:
             p = outing.pitcher
-            writer.writerow([outing.date, p.id, outing.site,
-                             calculate_game_score(p),
-                             p.out, p.h, p.r, p.er, p.bb, p.so])
-
+            starts_writer.writerow([i, outing.date, p.id, outing.site,
+                                    calculate_game_score(p),
+                                    p.out, p.h, p.r, p.er, p.bb, p.so])
+            i += 1
+        for game in games:
+            games_writer.writerow([j, game.date, game.site, game.total_runs])
+            j += 1
 
 if __name__ == '__main__':
-    paths = ['regular_season/box_scores',
-             'postseason/box_scores']
-
-    with open('starts.csv', 'w') as csvfile:
-        starts_writer = csv.writer(csvfile, delimiter=',')
-        for path in paths:
-            write_all(path, starts_writer)
+    i, j = 1, 1
+    paths = ['regular_season/box_scores', 'postseason/box_scores']
+    with open('starts.csv', 'w') as starts_csvfile:
+        with open('games.csv', 'w') as games_csvfile:
+            starts_writer = csv.writer(starts_csvfile, delimiter=',')
+            games_writer = csv.writer(games_csvfile, delimiter=',')
+            for path in paths:
+                write_all(path, starts_writer, games_writer)
