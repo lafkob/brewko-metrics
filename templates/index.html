@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
+{%- block styles %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/bootstrap-datepicker/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+{%- endblock styles %}
+
 {% block content %}
     <div class="container">
         <div class="page-header">
@@ -10,6 +15,9 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Pitcher Game Score</div>
                     <div class="panel-body">
+                        <div class="input-group date">
+                          <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        </div>
                         <table class="table table-condensed table-hover table-striped">
                             <thead>
                                 <tr>
@@ -44,3 +52,10 @@
         </div>
     </div>
 {% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{%- endblock scripts %}
