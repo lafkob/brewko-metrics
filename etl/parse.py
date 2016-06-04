@@ -53,7 +53,7 @@ def calculate_game_score(player):
 
 
 def parse_all(path):
-    for file in os.listdir(path):
+    for file in sorted(os.listdir(path)):
         if int(file.split('.')[0]) > 1959:
             print(path + '/' + file)
             yield parse_for_starting_pitcher_outings('%s/%s' % (path, file))
