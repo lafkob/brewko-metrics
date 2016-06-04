@@ -49,7 +49,7 @@ class ParkFactor(object):
             factor = pf.get_park_factor(site, date)
             update_cursor.execute('UPDATE starts SET park_factor = {} '
                                   'where id = {}'.format(factor, id))
-
+        self.conn.commit()
 
 if __name__ == '__main__':
     pf = ParkFactor('starts.db')
