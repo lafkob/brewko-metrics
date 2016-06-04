@@ -59,18 +59,19 @@ def parse_all(path):
             yield parse_for_starting_pitcher_outings('%s/%s' % (path, file))
 
 
-def write_all(path, starts_writer, games_writer):
+def write_all(path, starts_writer, games_writer, postseason=0):
     global i
     global j
     for outings, games in parse_all(path):
         for outing in outings:
             p = outing.pitcher
-            starts_writer.writerow([i, outing.date, p.id, outing.site,
-                                    calculate_game_score(p),
+            starts_writer.writerow([i, outing.date, postseason, p.id,
+                                    outing.site, calculate_game_score(p),
                                     p.out, p.h, p.r, p.er, p.bb, p.so])
             i += 1
         for game in games:
-            games_writer.writerow([j, game.date, game.site, game.total_runs])
+            games_writer.writerow([j, game.date, postseason, game.site,
+                                   game.total_runs])
             j += 1
 
 if __name__ == '__main__':
@@ -80,5 +81,5 @@ if __name__ == '__main__':
         with open('games.csv', 'w') as games_csvfile:
             starts_writer = csv.writer(starts_csvfile, delimiter=',')
             games_writer = csv.writer(games_csvfile, delimiter=',')
-            for path in paths:
-                write_all(path, starts_writer, games_writer)
+            write_all(paths[0], starts_writer, games_writer)
+            write_all(paths[1], starts_writer, games_writer, postseason=1)
